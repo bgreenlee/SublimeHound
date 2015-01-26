@@ -15,7 +15,7 @@ There are two required parameters:
 
 Here are the default settings:
 
-```json
+```javascript
 /* default settings */
 {
     // location of your hound instance
