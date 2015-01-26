@@ -131,7 +131,6 @@ class HoundSearchCommand(HoundBaseCommand):
 
     def api_request(self, uri, params=None):
         url = "%s/api/v1/%s" % (self.hound_url, uri)
-        # setting Host: localhost is an ugly hack to get around authentication
         r = requests.get(url, params=params, headers=self.custom_headers)
         response = r.json()
         if self.debug:
