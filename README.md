@@ -32,14 +32,12 @@ See below for other settings.
     // e.g. {"X-Auth":"s3kret"}
     "custom_headers": {},
 
-    // Set to true to enable double-click handling in search results. You will
-    // need to restart Sublime Text for this to take effect.
-    // This defaults to false because Sublime Text currently has only a global
-    // context for mouse events, so enabling this will conflict with any other
-    // plugins that also define a double-click handler
-    "search_results_double_click": false,
-
     // set to true to enable debug logging
     "debug": false
 }
 ```
+
+## Notes
+
+Hound sets up double-click handler for search results. The event is forwarded, so it doesn't interfere with the system double-click handler. However, since Sublime Text currently has only a global context for mouse events, if will conflict with any other plugins that also define a double-click handler.
+

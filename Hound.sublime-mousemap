@@ -1,8 +1,0 @@
-[
-    {
-      "button": "button1",
-      "count": 2,
-      "press_command": "hound_double_click",
-      "press_args": {"command": "drag_select", "args": {"by": "words"}}
-    }
-]

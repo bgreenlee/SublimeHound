@@ -1,0 +1,13 @@
+[
+    // Set up double-click handler for search results. The drag_select event is
+    // forwarded, so it doesn't interfere with the system double-click handler.
+    // However, since Sublime Text currently has only a global context for
+    // mouse events, if will conflict with any other plugins that also define a
+    // double-click handler
+    {
+      "button": "button1",
+      "count": 2,
+      "press_command": "hound_double_click",
+      "press_args": {"command": "drag_select", "args": {"by": "words"}}
+    }
+]
