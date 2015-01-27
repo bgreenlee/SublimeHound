@@ -5,12 +5,22 @@ import webbrowser
 import subprocess
 import re
 from collections import OrderedDict
+import os
+import os.path
+import shutil
 from .lib import requests
 
 logging.basicConfig(format='[Hound] %(levelname)s: %(message)s')
 logger = logging.getLogger()
 
 SETTINGS = "Hound.sublime-settings"
+
+# set up double-click handler if enabled in settings, remove otherwise
+settings = sublime.load_settings(SETTINGS)
+if settings.get("search_results_double_click"):
+    shutil.copy("Hound.sublime-mousemap", "Default.sublime-mousemap")
+elif os.path.exists("Default.sublime-mousemap"):
+    os.remove("Default.sublime-mousemap")
 
 class HoundBaseCommand(sublime_plugin.TextCommand):
     def run(self, edit):
