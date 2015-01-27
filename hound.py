@@ -8,7 +8,10 @@ from collections import OrderedDict
 import os
 import os.path
 import shutil
-from .lib import requests
+import urllib.parse
+import urllib.request
+import http.client
+import json
 
 logging.basicConfig(format='[Hound] %(levelname)s: %(message)s')
 logger = logging.getLogger()
@@ -25,15 +28,9 @@ class HoundBaseCommand(sublime_plugin.TextCommand):
         self.debug = self.settings.get("debug", False)
         if self.debug:
             logger.setLevel(logging.DEBUG)
-            # uncomment the following section to enable http request logging
-            # try:
-            #     import http.client as httplib
-            # except ImportError:
-            #     import httplib
-            # httplib.HTTPConnection.debuglevel = 1
-            # requests_log = logging.getLogger("requests.packages.urllib3")
-            # requests_log.setLevel(logging.DEBUG)
-            # requests_log.propagate = True
+            http.client.HTTPConnection.debuglevel = 1
+        else:
+            http.client.HTTPConnection.debuglevel = 0
 
         if self.hound_url == "" or self.github_base_url == "":
             self.settings.set("hound_url", self.hound_url)
@@ -134,12 +131,18 @@ class HoundSearchCommand(HoundBaseCommand):
 
     def api_request(self, uri, params=None):
         url = "%s/api/v1/%s" % (self.hound_url, uri)
-        r = requests.get(url, params=params, headers=self.custom_headers)
-        response = r.json()
+        if params:
+            data = urllib.parse.urlencode(params)
+            data = data.encode('utf-8') # data should be bytes
+        else:
+            data = None
+        req = urllib.request.urlopen(url, data)
+        encoding = req.headers.get_content_charset()
+        response_data = req.read().decode(encoding)
         if self.debug:
-            logger.debug("API response: %s" % response)
+            logger.debug("API response: %s" % response_data)
 
-        return response
+        return json.loads(response_data)
 
     # get the list of searchable repos from Hound
     def fetch_repos(self, exclude_repos=set()):
