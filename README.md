@@ -13,7 +13,15 @@ There are two required parameters:
 - `hound_url` - the location of your hound instance
 - `github_base_url` - the base url of where your repositories live
 
-See below for other settings.
+If you want to be able to double-click on search results to open them in Sublime, you'll also need to set:
+
+- `local_root_dir` - the local root directory of your repositories
+
+and optionally:
+
+- `include_repo_owner_in_filepath` - (default: false) set to true to include the repo owner in the filepath (after local_root_dir) when opening locally
+
+See below for all settings.
 
 ```javascript
 /* default settings */

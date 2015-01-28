@@ -182,6 +182,7 @@ class HoundDoubleClickCommand(sublime_plugin.TextCommand):
             self.github_base_url = self.settings.get("github_base_url")
             self.local_root_dir = self.settings.get("local_root_dir")
             self.default_open_in_browser = self.settings.get("default_open_in_browser")
+            self.include_repo_owner_in_filepath = self.settings.get("include_repo_owner_in_filepath")
 
             # it would be nice if this worked, but for some reason, layout_to_text is inaccurate:
             #   click_layout_location = (args['event']['x'], args['event']['y'])
@@ -212,7 +213,10 @@ class HoundDoubleClickCommand(sublime_plugin.TextCommand):
                             webbrowser.open(url)
                         else:
                             # open in editor
-                            full_filepath = "%s/%s/%s:%s" % (self.local_root_dir, repo, filepath, lineno)
+                            if self.include_repo_owner_in_filepath:
+                                full_filepath = "%s/%s/%s/%s:%s" % (self.local_root_dir, owner, repo, filepath, lineno)
+                            else:
+                                full_filepath = "%s/%s/%s:%s" % (self.local_root_dir, repo, filepath, lineno)
                             self.view.window().open_file(full_filepath, sublime.ENCODED_POSITION)
                         break
 
