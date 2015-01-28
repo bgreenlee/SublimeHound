@@ -19,10 +19,16 @@ See below for other settings.
 /* default settings */
 {
     // location of your hound instance
-    "hound_url": "http://hound.example.com",
+    // e.g. http://hound.example.com
+    "hound_url": "",
 
     // the base url of where your repositories live
-    "github_base_url": "https://github.com/yourorg",
+    // e.g. https://github.com/youror
+    "github_base_url": "",
+
+    // local root directory of your repositories, used for opening files within Sublime
+    // e.g. /Users/bob/repositories
+    "local_root_dir": "",
 
     // don't display results from these repos
     // e.g. ["somerepo", "someotherrepo"]
@@ -31,6 +37,14 @@ See below for other settings.
     // custom headers to send with the API request to Hound
     // e.g. {"X-Auth":"s3kret"}
     "custom_headers": {},
+
+    // open double-clicked search results in the browser by default
+    // set to false to open in Sublime Text (must have local_root_dir set)
+    // shift-double-click will always do the opposite
+    "default_open_in_browser": true,
+
+    // set to true to include the repo owner in the filepath (after local_root_dir) when opening locally
+    "include_repo_owner_in_filepath": false,
 
     // set to true to enable debug logging
     "debug": false

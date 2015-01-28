@@ -167,6 +167,8 @@ class HoundSearchCommand(HoundBaseCommand):
 
 
 class HoundDoubleClickCommand(sublime_plugin.TextCommand):
+    SHIFT_PRESSED = False
+
     def run_(self, counter, args):
         # do default action
         system_command = args["command"] if "command" in args else None
@@ -178,6 +180,8 @@ class HoundDoubleClickCommand(sublime_plugin.TextCommand):
         if self.view.name() == "Hound Search Results":
             self.settings = sublime.load_settings(SETTINGS)
             self.github_base_url = self.settings.get("github_base_url")
+            self.local_root_dir = self.settings.get("local_root_dir")
+            self.default_open_in_browser = self.settings.get("default_open_in_browser")
 
             # it would be nice if this worked, but for some reason, layout_to_text is inaccurate:
             #   click_layout_location = (args['event']['x'], args['event']['y'])
@@ -197,11 +201,20 @@ class HoundDoubleClickCommand(sublime_plugin.TextCommand):
                     row -= 1
                     line_region = self.view.line(self.view.text_point(row, col))
                     line = self.view.substr(line_region)
-                    line_match = re.match(r"^\[(.*?)\]\s+(.*?):", line)
+                    line_match = re.match(r"^\[/?(.*?)\]\s+(.*?):", line)
                     if line_match:
-                        repo = line_match.group(1)
+                        (owner, repo) = line_match.group(1).split("/")
                         filepath = line_match.group(2)
-                        url = "%s/%s/blob/master/%s#L%s" % (self.github_base_url, repo, filepath, lineno)
-                        url = url.replace("//", "/")
-                        webbrowser.open(url)
+                        if (self.default_open_in_browser and not self.SHIFT_PRESSED) or \
+                           (not self.default_open_in_browser and self.SHIFT_PRESSED):
+                            # open in browser
+                            url = "%s/%s/%s/blob/master/%s#L%s" % (self.github_base_url, owner, repo, filepath, lineno)
+                            webbrowser.open(url)
+                        else:
+                            # open in editor
+                            full_filepath = "%s/%s/%s:%s" % (self.local_root_dir, repo, filepath, lineno)
+                            self.view.window().open_file(full_filepath, sublime.ENCODED_POSITION)
                         break
+
+class HoundShiftDoubleClickCommand(HoundDoubleClickCommand):
+    SHIFT_PRESSED = True

@@ -9,5 +9,12 @@
       "count": 2,
       "press_command": "hound_double_click",
       "press_args": {"command": "drag_select", "args": {"by": "words"}}
+    },
+
+    {
+      "button": "button1", "modifiers": ["shift"],
+      "count": 2,
+      "press_command": "hound_shift_double_click",
+      "press_args": {"command": "drag_select", "args": {"by": "words"}}
     }
 ]
