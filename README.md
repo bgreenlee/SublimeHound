@@ -17,10 +17,6 @@ If you want to be able to double-click on search results to open them in Sublime
 
 - `local_root_dir` - the local root directory of your repositories
 
-and optionally:
-
-- `include_repo_owner_in_filepath` - (default: false) set to true to include the repo owner in the filepath (after local_root_dir) when opening locally
-
 See below for all settings.
 
 ```javascript
@@ -50,9 +46,6 @@ See below for all settings.
     // set to false to open in Sublime Text (must have local_root_dir set)
     // shift-double-click will always do the opposite
     "default_open_in_browser": true,
-
-    // set to true to include the repo owner in the filepath (after local_root_dir) when opening locally
-    "include_repo_owner_in_filepath": false,
 
     // set to true to enable debug logging
     "debug": false

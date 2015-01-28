@@ -182,7 +182,6 @@ class HoundDoubleClickCommand(sublime_plugin.TextCommand):
             self.github_base_url = self.settings.get("github_base_url")
             self.local_root_dir = self.settings.get("local_root_dir")
             self.default_open_in_browser = self.settings.get("default_open_in_browser")
-            self.include_repo_owner_in_filepath = self.settings.get("include_repo_owner_in_filepath")
 
             # it would be nice if this worked, but for some reason, layout_to_text is inaccurate:
             #   click_layout_location = (args['event']['x'], args['event']['y'])
@@ -213,12 +212,22 @@ class HoundDoubleClickCommand(sublime_plugin.TextCommand):
                             webbrowser.open(url)
                         else:
                             # open in editor
-                            if self.include_repo_owner_in_filepath:
-                                full_filepath = "%s/%s/%s/%s:%s" % (self.local_root_dir, owner, repo, filepath, lineno)
-                            else:
-                                full_filepath = "%s/%s/%s:%s" % (self.local_root_dir, repo, filepath, lineno)
-                            self.view.window().open_file(full_filepath, sublime.ENCODED_POSITION)
+                            # try with and without the repo owner
+                            try_full_filepaths = [
+                                "%s/%s/%s/%s" % (self.local_root_dir, owner, repo, filepath),
+                                "%s/%s/%s" % (self.local_root_dir, repo, filepath)
+                                ]
+                            file_found = False
+                            for full_filepath in try_full_filepaths:
+                                if os.path.exists(full_filepath):
+                                    self.view.window().open_file("%s:%s" % (full_filepath, lineno), sublime.ENCODED_POSITION)
+                                    file_found = True
+                                    break
+
+                            if not file_found:
+                                sublime.error_message("No such file %s" % full_filepath)
                         break
+
 
 class HoundShiftDoubleClickCommand(HoundDoubleClickCommand):
     SHIFT_PRESSED = True

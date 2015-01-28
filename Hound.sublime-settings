@@ -25,9 +25,6 @@
     // shift-double-click will always do the opposite
     "default_open_in_browser": true,
 
-    // set to true to include the repo owner in the filepath (after local_root_dir) when opening locally
-    "include_repo_owner_in_filepath": false,
-
     // set to true to enable debug logging
     "debug": false
 }
