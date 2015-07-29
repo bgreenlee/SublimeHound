@@ -136,7 +136,7 @@ class HoundSearchCommand(HoundBaseCommand):
             data = data.encode('utf-8') # data should be bytes
         else:
             data = None
-        req = urllib.request.urlopen(url, data)
+        req = urllib.request.urlopen(urllib.request.Request(url, data, headers=self.custom_headers))
         encoding = req.headers.get_content_charset()
         response_data = req.read().decode(encoding)
         if self.debug:
