@@ -54,5 +54,5 @@ See below for all settings.
 
 ## Notes
 
-Hound sets up double-click handler for search results. The event is forwarded, so it doesn't interfere with the system double-click handler. However, since Sublime Text currently has only a global context for mouse events, if will conflict with any other plugins that also define a double-click handler.
+Hound sets up double-click handler for search results. The event is forwarded, so it doesn't interfere with the system double-click handler. However, since Sublime Text currently has only a global context for mouse events, it will conflict with any other plugins that also define a double-click handler.
 
